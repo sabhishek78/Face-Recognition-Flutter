@@ -39,6 +39,7 @@ class _MyHomePageState extends State<_MyHomePage> {
   List e1;
   bool _faceFound = false;
   final TextEditingController _name = new TextEditingController();
+  final TextEditingController _id = new TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -365,7 +366,7 @@ class _MyHomePageState extends State<_MyHomePage> {
     print("Adding new face");
     var alert = new AlertDialog(
       title: new Text("Add Face"),
-      content: new Row(
+      content: new Column(
         children: <Widget>[
           new Expanded(
             child: new TextField(
@@ -374,6 +375,14 @@ class _MyHomePageState extends State<_MyHomePage> {
               decoration: new InputDecoration(
                   labelText: "Name", icon: new Icon(Icons.face)),
             ),
+          ),
+          new Expanded(
+            child: new TextField(
+              controller: _id,
+              autofocus: true,
+              decoration: new InputDecoration(
+                  labelText: "ID", icon: new Icon(Icons.perm_identity)),
+            ),
           )
         ],
       ),
@@ -381,8 +390,8 @@ class _MyHomePageState extends State<_MyHomePage> {
         new FlatButton(
             child: Text("Save"),
             onPressed: () {
-              _handle(_name.text.toUpperCase());
-              _name.clear();
+              _handle(_name.text.toUpperCase(),_id.text);
+//              _name.clear();
               Navigator.pop(context);
             }),
         new FlatButton(
@@ -401,7 +410,8 @@ class _MyHomePageState extends State<_MyHomePage> {
         });
   }
 
-  void _handle(String text) {
+  void _handle(String text,String text2) {
+    print("inside handle");
     data[text] = e1;
     jsonFile.writeAsStringSync(json.encode(data));
     _initializeCamera();
